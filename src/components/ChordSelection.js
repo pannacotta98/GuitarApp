@@ -27,8 +27,6 @@ const TestButton = styled.button`
   display: inline-block;
   font-size: 1.2rem;
   border-radius: 0.8rem;
-  /* -webkit-box-shadow: 10px 10px 13px -3px rgba(0, 0, 0, 0.52);
-  -moz-box-shadow: 10px 10px 13px -3px rgba(0, 0, 0, 0.52); */
   box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
   transition: 0.1s;
   cursor: pointer;
@@ -46,7 +44,7 @@ const TestButton = styled.button`
   :focus {
     /* outline: none; */
   }
-`; // TODO check the browser prefix thing; needed?
+`;
 
 export class ChordSelection extends Component {
   render() {

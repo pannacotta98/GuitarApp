@@ -1,5 +1,5 @@
 // prettier-ignore
-const INTERVAL_NUMBERS = new Map([
+const INTERVAL_NUMBERS = new Map<string, number>([
   ['1' , 0 ],
   ['b2', 1 ], ['b9' , 1],
   ['2' , 2 ], ['9'  , 2],
@@ -16,19 +16,13 @@ const INTERVAL_NUMBERS = new Map([
 
 const NOTE_NAMES = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'];
 
-// https://en.wikipedia.org/wiki/List_of_musical_scales_and_modes
-const SCALES_SRC = new Map(
-  [
-    ['Major (Ionian)', '1 2 3 4 5 6 7'],
-    ['Natural Minor (Aeolian)', '1 2 b3 4 5 b6 b7'],
-    ['Dorian', '1 2 b3 4 5 6 b7'],
-    ['Harmonic Minor', '1 2 b3 4 5 b6 7'],
-  ].map((scale) => [
-    scale[0],
-    // Change to internal representation
-    scale[1].split(' ').map((interval) => INTERVAL_NUMBERS.get(interval)),
-  ])
-);
+interface ChordType {
+  notes: string;
+  fullName: string;
+  abbr: string[];
+  scale: string;
+  weight: number;
+}
 
 /**
  * ...
@@ -37,7 +31,7 @@ const SCALES_SRC = new Map(
  * simple and Am/maj7#9b11 is complicated.
  * A large number means complicated and a low one means simple
  */
-const CHORDS_SRC = [
+const CHORDS_SRC: ChordType[] = [
   {
     notes: '1 3 5',
     fullName: 'major',
@@ -80,13 +74,13 @@ const CHORDS_SRC = [
     scale: 'Ionian',
     weight: 20,
   },
-  {
-    notes: '1 3 (5) (7) #11 (9,13..)', // fix
-    fullName: 'lydian',
-    abbr: ['maj<sup>♯4</sup>', '<sup>Δ♯4</sup>', '<sup>Δ♯11</sup>'],
-    scale: 'Lydian',
-    weight: 22,
-  },
+  // {
+  //   notes: '1 3 (5) (7) #11 (9,13..)', // fix
+  //   fullName: 'lydian',
+  //   abbr: ['maj<sup>♯4</sup>', '<sup>Δ♯4</sup>', '<sup>Δ♯11</sup>'],
+  //   scale: 'Lydian',
+  //   weight: 22,
+  // },
   {
     notes: '1 3 (5) (7) (9) b13 (11)',
     fullName: 'major seventh ♭6, or b13', // Detta känns väl inte helt huuundra
@@ -122,20 +116,20 @@ const CHORDS_SRC = [
     scale: 'Mixolydian',
     weight: 20,
   },
-  {
-    notes: '1 3 (5) b7 #11 (9,13..)',
-    fullName: 'lydian dominant seventh',
-    abbr: ['<sup>7♯11</sup>', '<sup>7♯4</sup>'],
-    scale: 'Lydian Dominant (melodic minor 4th mode)',
-    weight: 30,
-  },
-  {
-    notes: '1 3 (5) b7 b9 (#9,b5,6..)', // TODO Does this notation work!?
-    fullName: 'dominant ♭9',
-    abbr: ['<sup>7♭9</sup>'],
-    scale: 'Half-tone/tone (8 note scale), 1/2 step/whole step Diminished scale, Octatonic scale.',
-    weight: 30,
-  },
+  // {
+  //   notes: '1 3 (5) b7 #11 (9,13..)',
+  //   fullName: 'lydian dominant seventh',
+  //   abbr: ['<sup>7♯11</sup>', '<sup>7♯4</sup>'],
+  //   scale: 'Lydian Dominant (melodic minor 4th mode)',
+  //   weight: 30,
+  // },
+  // {
+  //   notes: '1 3 (5) b7 b9 (#9,b5,6..)', // TODO Does this notation work!?
+  //   fullName: 'dominant ♭9',
+  //   abbr: ['<sup>7♭9</sup>'],
+  //   scale: 'Half-tone/tone (8 note scale), 1/2 step/whole step Diminished scale, Octatonic scale.',
+  //   weight: 30,
+  // },
   {
     notes: '1 3 (5) b7 #9',
     fullName: 'dominant ♯9',
@@ -143,13 +137,13 @@ const CHORDS_SRC = [
     scale: 'Mixolydian with ♭3',
     weight: 30,
   },
-  {
-    notes: '1 3 b7 (b9) (b5,b6,#9..)',
-    fullName: 'altered',
-    abbr: ['alt7'],
-    scale: 'Locrian ♭4 (super-locrian)',
-    weight: 25,
-  },
+  // {
+  //   notes: '1 3 b7 (b9) (b5,b6,#9..)',
+  //   fullName: 'altered',
+  //   abbr: ['alt7'],
+  //   scale: 'Locrian ♭4 (super-locrian)',
+  //   weight: 25,
+  // },
   {
     notes: '1 4 (5)',
     fullName: 'suspended 4th',
@@ -241,20 +235,20 @@ const CHORDS_SRC = [
     scale: 'Dorian or aeolian',
     weight: 15,
   },
-  {
-    notes: '1 b3 (5) 7 (9, 13)',
-    fullName: 'minor/major seventh',
-    abbr: ['m<sup>maj7</sup>', 'm/ma7', 'm<sup>M7</sup>', '-<sup>Δ7</sup>', 'm<sup>Δ</sup>'],
-    scale: 'Minor melodic (ascending)',
-    weight: 20,
-  },
-  {
-    notes: '1 b3 (5) 7 (9, b13)', // FIXME även övre kanske
-    fullName: 'minor/major seventh',
-    abbr: ['m<sup>maj7</sup>', 'm/ma7', 'm<sup>M7</sup>', '-<sup>Δ7</sup>', 'm<sup>Δ</sup>'],
-    scale: 'Harmonic Minor',
-    weight: 20,
-  },
+  // {
+  //   notes: '1 b3 (5) 7 (9, 13)',
+  //   fullName: 'minor/major seventh',
+  //   abbr: ['m<sup>maj7</sup>', 'm/ma7', 'm<sup>M7</sup>', '-<sup>Δ7</sup>', 'm<sup>Δ</sup>'],
+  //   scale: 'Minor melodic (ascending)',
+  //   weight: 20,
+  // },
+  // {
+  //   notes: '1 b3 (5) 7 (9, b13)', // FIXME även övre kanske
+  //   fullName: 'minor/major seventh',
+  //   abbr: ['m<sup>maj7</sup>', 'm/ma7', 'm<sup>M7</sup>', '-<sup>Δ7</sup>', 'm<sup>Δ</sup>'],
+  //   scale: 'Harmonic Minor',
+  //   weight: 20,
+  // },
   {
     notes: '1 b3 (5) 6',
     fullName: 'minor sixth',
@@ -311,13 +305,13 @@ const CHORDS_SRC = [
     scale: 'Tone/Half-tone (8 note scale)',
     weight: 13,
   },
-  {
-    notes: '1 b3 b5 b7 (b9 or 9,11,13..)',
-    fullName: 'half-diminished',
-    abbr: ['m7♭5', 'ø'],
-    scale: 'Locrian or locrian ♯2',
-    weight: 13,
-  },
+  // {
+  //   notes: '1 b3 b5 b7 (b9 or 9,11,13..)',
+  //   fullName: 'half-diminished',
+  //   abbr: ['m7♭5', 'ø'],
+  //   scale: 'Locrian or locrian ♯2',
+  //   weight: 13,
+  // },
   {
     notes: '1 5',
     fullName: 'fifth/power chord',
@@ -355,4 +349,5 @@ const CHORDS_SRC = [
   },
 ];
 
-export { INTERVAL_NUMBERS, CHORDS_SRC, SCALES_SRC, NOTE_NAMES };
+export { INTERVAL_NUMBERS, CHORDS_SRC, NOTE_NAMES };
+export type { ChordType };

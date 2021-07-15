@@ -4,7 +4,7 @@ import { ChordNamer } from './ChordNamer';
 import { TestComponent } from './TestComponent';
 import { ScaleVisualizer } from './ScaleVisualizer';
 import { NotFound } from './NotFound';
-import { GlobalStateProvider } from './../globalState';
+import { GlobalStateProvider } from '../globalState';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { Settings } from './Settings';
 

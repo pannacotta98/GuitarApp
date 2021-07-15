@@ -1,10 +1,11 @@
-// TODO Think about some more elegant solution for this
+// // TODO Think about some more elegant solution for this
 const noteNames = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'];
 
 export const IntervalUtilities = {
   /**
    * Returns the note normalized to octave 0
    * @param {number} noteNumber
+   * @deprecated
    */
   normalizeNote(noteNumber) {
     return noteNumber % noteNames.length;
@@ -13,6 +14,7 @@ export const IntervalUtilities = {
   /**
    * Converts internal number representation to note name as letter (without octave)
    * @param {number} number
+   * @deprecated
    */
   toNoteName(number) {
     return noteNames[this.normalizeNote(number)];
@@ -21,6 +23,7 @@ export const IntervalUtilities = {
   /**
    * Converts internal number representation to note name as letter with octave
    * @param {number} number
+   * @deprecated
    */
   toNoteNameWithOctave(number) {
     return `${this.toNoteName(number)}${Math.trunc(number / noteNames.length)}`;
@@ -29,6 +32,7 @@ export const IntervalUtilities = {
   /**
    * Converts note name to internal number representation
    * @param {string} noteName The note name with octave
+   * @deprecated
    */
   toNoteNumber(noteName) {
     const name = noteName.slice(0, -1);

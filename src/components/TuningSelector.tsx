@@ -20,7 +20,7 @@ function NoteSelector() {
     // value={this.state.selectedScale}
     // onChange={(event) => this.setState({ selectedScale: event.target.value })}
     >
-      // TODO THiiiis
+      {/* TODO THiiiis */}
       {['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'].map((name) => (
         <option key={name}>{name}</option>
       ))}

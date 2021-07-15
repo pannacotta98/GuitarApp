@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IntervalUtilities } from '../logic/IntervalUtilities';
-import { ChordGenerator } from '../logic/ChordGenerator';
+import { ChordGenerator } from '../logic/chord/ChordGenerator';
 import { NOTE_NAMES } from '../logic/musicalData';
+import { GuitarFingering } from '../logic/chord/GuitarChord';
 
 const DetailsContainer = styled.div`
   padding-top: 1rem;
 `;
 
-export function ChordDetails({ fingering }) {
+export function ChordDetails({ fingering }: { fingering: GuitarFingering }) {
   const noteOccurences = new Map();
   // TODO This should be fixed but depends on other changes i will make
   const cg = new ChordGenerator();

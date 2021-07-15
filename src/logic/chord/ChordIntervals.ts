@@ -1,20 +1,29 @@
-import { INTERVAL_NUMBERS, CHORDS_SRC } from './musicalData';
+import { INTERVAL_NUMBERS, CHORDS_SRC, ChordType } from '../musicalData';
+import { combine } from '../util';
 // https://en.wikibooks.org/wiki/Music_Theory/Complete_List_of_Chord_Patterns
 
 // Singleton for now; might not be ideal in future
 export class ChordIntervals {
-  static instance;
+  static instance: ChordIntervals;
+
+  chordLookUp: Map<string, ChordType>;
+
   constructor() {
     // Initialize lookup
     this.chordLookUp = new Map();
     for (const chord of CHORDS_SRC) {
-      const optionalNotes = [];
+      const optionalNotes: number[] = [];
       const requiredNotes = chord.notes
         .split(' ')
         .filter((interval) => {
           const isRequired = interval[0] !== '(';
           if (!isRequired) {
-            optionalNotes.push(INTERVAL_NUMBERS.get(interval.slice(1, -1)));
+            const intervalNumber = INTERVAL_NUMBERS.get(interval.slice(1, -1));
+            if (intervalNumber !== undefined) {
+              optionalNotes.push(intervalNumber);
+            } else {
+              console.error('Somethiiing is wrooOoOng with chord lookup thing', interval);
+            }
           }
           return isRequired;
         })
@@ -30,7 +39,14 @@ export class ChordIntervals {
         this.chordLookUp.set(
           requiredNotes
             .concat(optionals)
-            .sort((a, b) => a - b)
+            .sort((a, b) => {
+              // TODO Hacking typescript until the types are improved in other places
+              if (a === undefined || b === undefined) {
+                console.error('bläää', a, b);
+                return 0;
+              }
+              return a - b;
+            })
             .join('|'),
           chord
         );
@@ -42,29 +58,6 @@ export class ChordIntervals {
     // console.log(this.chordLookUp);
     console.log('size of chordLookUp:', this.chordLookUp.size);
     console.log('size of CHORD_SRC', CHORDS_SRC.length);
-
-    // https://web.archive.org/web/20140418004051/http://dzone.com/snippets/calculate-all-combinations
-    function combine(a) {
-      var fn = function (n, src, got, all) {
-        if (n === 0) {
-          // changed == to ===
-          if (got.length > 0) {
-            all[all.length] = got;
-          }
-          return;
-        }
-        for (var j = 0; j < src.length; j++) {
-          fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
-        }
-        return;
-      };
-      var all = [];
-      for (var i = 0; i < a.length; i++) {
-        fn(i, a, [], all);
-      }
-      all.push(a);
-      return all;
-    }
   }
 
   static getInstance() {
